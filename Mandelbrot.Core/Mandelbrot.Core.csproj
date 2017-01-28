@@ -40,7 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CpuBuilder.cs" />
+    <Compile Include="CpuV0Builder.cs" />
     <Compile Include="CpuV1Builder.cs" />
     <Compile Include="CpuV2Builder.cs" />
     <Compile Include="CpuV3Builder.cs" />

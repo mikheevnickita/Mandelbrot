@@ -31,7 +31,7 @@ namespace Mandelbrot.Console
 							for (int i = 0; i < C; i++)
 								builder.Calculate(Array, W, H, new Complex(-2.277777, 1), new Complex(1.277777, -1));
 						},
-						sw => $"{builder.FileName,-8}: build x{C} times in {sw.ElapsedTicks/1000.0/C,7:## ##0.000} ms"
+						sw => $"{builder.FileName,-8}: build x{C} times in {sw.ElapsedTicks/1000.0/C,9:# ##0.000} ms"
 						);
 
 					SaveBitmap(bm, Array);

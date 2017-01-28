@@ -4,7 +4,7 @@ using static System.Math;
 
 namespace Mandelbrot.Core
 {
-	public class CpuBuilder : IBuilder
+	public class CpuV0Builder //: IBuilder
 	{
 		public String FileName => "cpu0.bmp";
 
