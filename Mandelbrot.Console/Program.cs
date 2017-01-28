@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using Mandelbrot.Core;
 
 namespace Mandelbrot.Console
@@ -10,42 +11,52 @@ namespace Mandelbrot.Console
 	{
 		const Int32 W = 1920;
 		const Int32 H = 1080;
-		const Int32 C = 1;
-		static List<String> log = new List<String>();
+		const Int32 C = 2;
+		static readonly List<String> log = new List<String>();
+		static readonly string Desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+		static readonly UInt16[][] Array = CreateArray();
 
 		static void Main(string[] args)
 		{
-			var desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-			var array = CreateArray();
-
-			foreach (var builder in new IBuilder[] { new CpuBuilder() })
+			GetImplemenations<IBuilder>()
+			.ForEach(builder =>
 			{
 				using (var bm = new DirectBitmap(W, H))
 				{
-					var destPath = Path.Combine(desktop, builder.FileName);
+					var destPath = Path.Combine(Desktop, builder.FileName);
 
 					Measure(
 						() =>
 						{
 							for (int i = 0; i < C; i++)
-								builder.Calculate(array, W, H, new Complex(-2.277777, 1), new Complex(1.277777, -1));
+								builder.Calculate(Array, W, H, new Complex(-2.277777, 1), new Complex(1.277777, -1));
 						},
 						sw => $"{builder.FileName,-8}: build x{C} times in {sw.ElapsedTicks/1000.0/C,7:## ##0.000} ms"
-					);
+						);
 
-					SaveBitmap(bm, array);
+					SaveBitmap(bm, Array);
 					bm.Bitmap.Save(destPath);
 					//Process.Start(destPath);
 				}
+			});
 
-				foreach (var line in log)
-					System.Console.WriteLine(line);
-
-				System.Console.ReadKey();
-			}
+			foreach (var line in log)
+				System.Console.WriteLine(line);
+			System.Console.ReadKey();
 		}
 
-		private static ushort[][] CreateArray()
+		private static List<T> GetImplemenations<T>()
+		{
+			var iface = typeof (T);
+
+			return AppDomain.CurrentDomain.GetAssemblies()
+				.SelectMany(s => s.GetTypes())
+				.Where(p => iface.IsAssignableFrom(p) && !p.IsInterface)
+				.Select(x => (T) Activator.CreateInstance(x))
+				.ToList();
+		}
+
+		private static UInt16[][] CreateArray()
 		{
 			var array = new UInt16[H][];
 			for (int i = 0; i < H; i++)
@@ -63,7 +74,7 @@ namespace Mandelbrot.Console
 			log.Add(logmsg?.Invoke(sw));
 		}
 
-		private static void SaveBitmap(DirectBitmap bm, ushort[][] bytes)
+		private static void SaveBitmap(DirectBitmap bm, UInt16[][] bytes)
 		{
 			for (int i = 0; i < H; i++)
 				for (int j = 0; j < W; j++)
