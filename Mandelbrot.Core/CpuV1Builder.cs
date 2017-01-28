@@ -7,11 +7,11 @@ namespace Mandelbrot.Core
 	{
 		public String FileName => "cpu1.bmp";
 
-		public void Calculate(UInt16[][] result, Int32 W, Int32 H, Complex pLeftTop, Complex pRightBottom)
+		public void Calculate(UInt16[,] result, Int32 W, Int32 H, Complex pLeftTop, Complex pRightBottom)
 		{
 			for (int i = 0; i < H; i++)
 				for (int j = 0; j < W; j++)
-					result[i][j] = Calc(
+					result[i,j] = Calc(
 						new Complex(
 							pLeftTop.Real + (pRightBottom.Real - pLeftTop.Real) / W * j,
 							pLeftTop.Im + (pRightBottom.Im - pLeftTop.Im) / H * i

@@ -14,7 +14,7 @@ namespace Mandelbrot.Console
 		const Int32 C = 2;
 		static readonly List<String> log = new List<String>();
 		static readonly string Desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-		static readonly UInt16[][] Array = CreateArray();
+		static readonly UInt16[,] Array = CreateArray();
 
 		static void Main(string[] args)
 		{
@@ -31,7 +31,7 @@ namespace Mandelbrot.Console
 							for (int i = 0; i < C; i++)
 								builder.Calculate(Array, W, H, new Complex(-2.277777, 1), new Complex(1.277777, -1));
 						},
-						sw => $"{builder.FileName,-8}: build x{C} times in {sw.ElapsedTicks/1000.0/C,9:# ##0.000} ms"
+						sw => $"{builder.FileName,-10}: build x{C} times in {(Double)(sw.ElapsedMilliseconds)/C,9:# ##0.000} ms"
 						);
 
 					SaveBitmap(bm, Array);
@@ -56,11 +56,9 @@ namespace Mandelbrot.Console
 				.ToList();
 		}
 
-		private static UInt16[][] CreateArray()
+		private static UInt16[,] CreateArray()
 		{
-			var array = new UInt16[H][];
-			for (int i = 0; i < H; i++)
-				array[i] = new UInt16[W];
+			var array = new UInt16[H,W];
 			return array;
 		}
 
@@ -74,11 +72,11 @@ namespace Mandelbrot.Console
 			log.Add(logmsg?.Invoke(sw));
 		}
 
-		private static void SaveBitmap(DirectBitmap bm, UInt16[][] bytes)
+		private static void SaveBitmap(DirectBitmap bm, UInt16[,] bytes)
 		{
 			for (int i = 0; i < H; i++)
 				for (int j = 0; j < W; j++)
-					bm.Bits[i*W + j] = GetColor(bytes[i][j]);
+					bm.Bits[i*W + j] = GetColor(bytes[i,j]);
 		}
 
 		private static UInt32 GetColor(UInt32 sh)

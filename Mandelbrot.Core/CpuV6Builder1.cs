@@ -10,7 +10,7 @@ namespace Mandelbrot.Core
 		public String FileName => "cpu61.bmp";
 		private const Int32 TaskCount = 128;
 
-		public void Calculate(UInt16[][] result, Int32 W, Int32 H, Complex pLeftTop, Complex pRightBottom)
+		public void Calculate(UInt16[,] result, Int32 W, Int32 H, Complex pLeftTop, Complex pRightBottom)
 		{
 			Double pLeftTopReal = pLeftTop.Real;
 			Double pLeftTopIm = pLeftTop.Im;
@@ -30,7 +30,7 @@ namespace Mandelbrot.Core
 			Task.WaitAll(tasks);
 		}
 
-		private void InnerLoopForI(UInt16[][] result, Int32 k, Int32 W, Int32 H, Double pLeftTopReal, Double pLeftTopIm, Double dReal, Double dIm)
+		private void InnerLoopForI(UInt16[,] result, Int32 k, Int32 W, Int32 H, Double pLeftTopReal, Double pLeftTopIm, Double dReal, Double dIm)
 		{
 			for (int i = k; i < H; i += TaskCount)
 			{
@@ -38,7 +38,7 @@ namespace Mandelbrot.Core
 				Double imagine = pLeftTopIm + i * dIm;
 				for (int j = 0; j < W; j++)
 				{
-					result[i][j] = Calc(real, imagine);
+					result[i,j] = Calc(real, imagine);
 					real += dReal;
 				}
 			}

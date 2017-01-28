@@ -7,7 +7,7 @@ namespace Mandelbrot.Core
 	{
 		public String FileName => "cpu5.bmp";
 
-		public void Calculate(UInt16[][] result, Int32 W, Int32 H, Complex pLeftTop, Complex pRightBottom)
+		public void Calculate(UInt16[,] result, Int32 W, Int32 H, Complex pLeftTop, Complex pRightBottom)
 		{
 			Double pLeftTopReal = pLeftTop.Real;
 			Double pLeftTopIm = pLeftTop.Im;
@@ -22,7 +22,7 @@ namespace Mandelbrot.Core
 				Double real = pLeftTopReal;
 				for (int j = 0; j < W; j++)
 				{
-					result[i][j] = Calc(real, imagine);
+					result[i,j] = Calc(real, imagine);
 					real += dReal;
 				}
 				imagine += dIm;

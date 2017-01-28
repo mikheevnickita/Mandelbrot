@@ -8,7 +8,7 @@ namespace Mandelbrot.Core
 	{
 		public String FileName => "cpu6.bmp";
 
-		public void Calculate(UInt16[][] result, Int32 W, Int32 H, Complex pLeftTop, Complex pRightBottom)
+		public void Calculate(UInt16[,] result, Int32 W, Int32 H, Complex pLeftTop, Complex pRightBottom)
 		{
 			Double pLeftTopReal = pLeftTop.Real;
 			Double pLeftTopIm = pLeftTop.Im;
@@ -20,13 +20,13 @@ namespace Mandelbrot.Core
 			Parallel.For(0, H, i => InnerLoopForI(result, W, i, pLeftTopReal, pLeftTopIm, dReal, dIm));
 		}
 
-		private void InnerLoopForI(UInt16[][] result, Int32 W, Int32 i, Double pLeftTopReal, Double pLeftTopIm, Double dReal, Double dIm )
+		private void InnerLoopForI(UInt16[,] result, Int32 W, Int32 i, Double pLeftTopReal, Double pLeftTopIm, Double dReal, Double dIm )
 		{
 			Double real = pLeftTopReal;
 			Double imagine = pLeftTopIm + i * dIm;
 			for (int j = 0; j < W; j++)
 			{
-				result[i][j] = Calc(real, imagine);
+				result[i,j] = Calc(real, imagine);
 				real += dReal;
 			}
 		}
