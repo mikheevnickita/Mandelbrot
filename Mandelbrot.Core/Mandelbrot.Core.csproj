@@ -47,6 +47,7 @@
     <Compile Include="CpuV4Builder.cs" />
     <Compile Include="CpuV5Builder.cs" />
     <Compile Include="CpuV6Builder.cs" />
+    <Compile Include="CpuV6Builder1.cs" />
     <Compile Include="IBuilder.cs" />
     <Compile Include="Complex.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
