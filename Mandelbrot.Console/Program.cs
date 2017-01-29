@@ -11,7 +11,7 @@ namespace Mandelbrot.Console
 	{
 		const Int32 W = 1920;
 		const Int32 H = 1080;
-		const Int32 C = 10;
+		const Int32 C = 50;
 		static readonly string Desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 		static UInt16[,] Array;
 
@@ -51,6 +51,7 @@ namespace Mandelbrot.Console
 			return AppDomain.CurrentDomain.GetAssemblies()
 				.SelectMany(s => s.GetTypes())
 				.Where(p => iface.IsAssignableFrom(p) && !p.IsInterface)
+				.OrderByDescending(p => p.FullName)
 				.Select(x => (T) Activator.CreateInstance(x))
 				.ToList();
 		}
