@@ -11,10 +11,9 @@ namespace Mandelbrot.Console
 	{
 		const Int32 W = 1920;
 		const Int32 H = 1080;
-		const Int32 C = 2;
-		static readonly List<String> log = new List<String>();
+		const Int32 C = 10;
 		static readonly string Desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-		static readonly UInt16[,] Array = CreateArray();
+		static UInt16[,] Array;
 
 		static void Main(string[] args)
 		{
@@ -25,6 +24,8 @@ namespace Mandelbrot.Console
 				{
 					var destPath = Path.Combine(Desktop, builder.FileName);
 
+					Array = CreateArray();
+
 					Measure(
 						() =>
 						{
@@ -32,7 +33,7 @@ namespace Mandelbrot.Console
 								builder.Calculate(Array, W, H, new Complex(-2.277777, 1), new Complex(1.277777, -1));
 						},
 						sw => $"{builder.FileName,-10}: build x{C} times in {(Double)(sw.ElapsedMilliseconds)/C,9:# ##0.000} ms"
-						);
+					);
 
 					SaveBitmap(bm, Array);
 					bm.Bitmap.Save(destPath);
@@ -40,8 +41,6 @@ namespace Mandelbrot.Console
 				}
 			});
 
-			foreach (var line in log)
-				System.Console.WriteLine(line);
 			System.Console.ReadKey();
 		}
 
@@ -69,7 +68,7 @@ namespace Mandelbrot.Console
 			action?.Invoke();
 			sw.Stop();
 
-			log.Add(logmsg?.Invoke(sw));
+			System.Console.WriteLine(logmsg?.Invoke(sw));
 		}
 
 		private static void SaveBitmap(DirectBitmap bm, UInt16[,] bytes)

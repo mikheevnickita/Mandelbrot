@@ -6,7 +6,7 @@ namespace Mandelbrot.Core
 {
 	public class CpuV6Builder : IBuilder
 	{
-		public String FileName => "cpu6.bmp";
+		public String FileName => "cpu60.bmp";
 
 		public void Calculate(UInt16[,] result, Int32 W, Int32 H, Complex pLeftTop, Complex pRightBottom)
 		{
